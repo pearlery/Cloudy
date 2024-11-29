@@ -1,0 +1,3 @@
+document.querySelector("#editPostModal .modal-body").innerHTML = "<%= j render partial: 'form', locals: { post: @post } %>";
+const editModal = new bootstrap.Modal(document.getElementById("editPostModal"));
+editModal.show();

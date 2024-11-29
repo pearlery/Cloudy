@@ -1,0 +1,14 @@
+<%= form_with(model: post, url: post_path(post), method: :patch, local: true) do |f| %>
+  <div class="mb-3">
+    <%= f.label :topic %>
+    <%= f.text_field :topic, class: "form-control", required: true %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :content %>
+    <%= f.text_area :content, class: "form-control", rows: 4, required: true %>
+  </div>
+  <div class="d-flex justify-content-between">
+    <%= f.submit "Update Post", class: "btn btn-primary" %>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+  </div>
+<% end %>

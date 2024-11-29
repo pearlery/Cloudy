@@ -1,0 +1,144 @@
+<div id="headbar" class="headbar">
+    <div class="headbar-left">
+        <h1>CLOUDY </h1>
+        <h4> vibeboard </h4> 
+    </div>
+    <%= form_with url: posts_path, local: true, method: :get do |f| %>
+        <%= f.text_field :search, placeholder: "Find post..." %>
+        <%= f.submit "Search" %>
+    <% end %>
+    <nav>
+        <%= form_tag(logout_path, method: :delete) do %>
+            <%= submit_tag "Logout" %>
+        <% end %>
+    </nav>
+</div>
+
+
+<div id="container">
+    <div id="left">
+        <%= image_tag 'Profile.jpg' %>
+        <p><%= current_user.username %></p>
+    </div>
+
+
+
+    <div id="middle">
+        <%= form_with model: @post, local: true do |f| %>
+            <div id="post-create">
+                <div class= "from-create">
+                    <div class="from-topic">
+                        <p>
+                            <%= f.label :topic %><br />
+                            <%= f.text_field :topic %>
+                        </p>
+                    </div>
+                    <div class="from-content">
+                        <p>
+                            <%= f.label :content %><br />
+                            <%= f.text_field :content %>
+                        </p>
+                    </div>
+                    <%= f.submit "Create" %>
+                </div>
+                
+            </div>
+        <% end %>
+
+        
+
+        <% @posts.each do |post| %>
+            <div class="post">
+                <div class = "top-con">
+                    <div id="post-profile">
+                        <div class="post-profile">
+                            <%= image_tag 'Profile.jpg', class: 'profile-image' %>
+                            <h4 class="username"><%= post.user.username %></h4>
+                        </div>
+                        <div>
+                            <% if post.user == current_user %>
+                                <div class="edit-del-btn">
+                                    <%= link_to "Edit", edit_post_path(post), remote: true, class: "btn btn-warning btn-sm" %>
+                                    <%= link_to "Delete", post_path(post), data: { confirm: "Are you sure?", turbo_method: "delete" }, class: "btn btn-danger btn-sm" %>    
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+
+
+
+                    <div class="post-topic">
+                        
+                    </div>
+                        <h1><%= post.topic %></h1>
+                    <p><%= post.content %></p>
+
+
+
+
+
+                </div>
+                <div class="bottom-con">
+                    <div class="post-status-count">
+                        <p class="likes-count">Likes: <%= post.likes.count %></p>
+                        <p>Comments: <%= post.comments.count %></p>
+                    </div>
+                    
+                    <%= form_with(model: [post, @comment], local: true) do |f| %>
+                        <div class="like-comment-container">
+                            <% if post.likes.exists?(user: current_user) %>
+                                <%= link_to "Unlike", like_post_path(post), method: :post, class: "like-button", data: { post_id: post.id, liked: true }, remote: true %>
+                            <% else %>
+                                <%= link_to "Like", like_post_path(post), method: :post, class: "like-button", data: { post_id: post.id, liked: false }, remote: true %>
+                            <% end %>
+                            <%= f.text_field :content, placeholder: "Write a comment..." %>
+                            <%= f.submit "Comment" %>
+                        </div>
+                    <% end %>
+
+                    <% post.comments.each do |comment| %>
+                        <div class="userscomment">
+                            <div id="comment-profile">
+                                <%= image_tag 'Profile.jpg', class: 'comment-image' %>
+                                <h4><%= comment.user.username %></h4>
+                            </div>
+                            <p><%= comment.content %></p>
+                        </div>
+                    <% end %>
+                </div>
+
+                
+
+
+
+
+
+                <div>
+                    
+                </div>
+
+
+
+
+            </div>
+        <% end %>
+
+
+
+        <div id="editPostModal" class="modal fade" tabindex="-1" aria-labelledby="editPostLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editPostLabel">Edit Post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Content will be dynamically loaded via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

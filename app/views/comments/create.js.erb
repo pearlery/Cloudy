@@ -1,0 +1,11 @@
+const commentContent = "<%= j @comment.content %>";
+const commentUser = "<%= j @comment.user.username %>";
+
+const newCommentHTML = `
+  <div class="comment">
+    <strong><%= j @comment.user.username %></strong>: 
+    <p><%= j @comment.content %></p>
+  </div>
+`;
+
+document.getElementById("comments-list").innerHTML += newCommentHTML;

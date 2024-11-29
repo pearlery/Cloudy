@@ -1,0 +1,18 @@
+
+const button = document.querySelector(`.like-button[data-post-id='<%= @post.id %>']`);
+if (button) {
+  if ("<%= @status %>" === 'liked') {
+    button.textContent = 'Unlike';
+    button.dataset.liked = true;
+  } else {
+    button.textContent = 'Like';
+    button.dataset.liked = false;
+  }
+
+  // อัปเดตจำนวน Likes
+  const likesCountElement = button.closest('.post').querySelector('.likes-count');
+  if (likesCountElement) {
+    likesCountElement.textContent = 'Likes: <%= @post.likes.count %>';
+  }
+}
+
